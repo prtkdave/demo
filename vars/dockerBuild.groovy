@@ -7,5 +7,5 @@ def call(String project, String hubUser) {
     )]) {
         sh "docker login -u '$dockeruser' -p '$dockerpass'"
     }
-    sh "docker image push ${hubUser}/${project}:beta-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+   // sh "docker image push ${hubUser}/${project}:beta-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 }

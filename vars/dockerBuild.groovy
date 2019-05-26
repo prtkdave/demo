@@ -1,9 +1,11 @@
-def call(String imageName, String buildId) { 
-
-	def scriptFileContent = libraryResource( 'com/linagora/analyze-dockerfile.sh' )
-	sh scriptFileContent
-	sh 'echo "imageName: ${imageName}" >> /tmp/gov.results.txt'
-	sh 'echo "imageVersion: ${buildId}" >> /tmp/gov.results.txt'
-	sh 'curl --data-binary "@/tmp/gov.results.txt" -X POST...'
-	sh 'rm -rf /tmp/gov.results.txt'
+def call(String project, String hubUser) {
+    sh "docker image build -t ${hubUser}/${project}:beta-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
+    withCredentials([usernamePassword(
+            credentialsId: "docker",
+            usernameVariable: "USER",
+            passwordVariable: "PASS"
+    )]) {
+        sh "docker login -u '$USER' -p '$PASS'"
+    }
+    sh "docker image push ${hubUser}/${project}:beta-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 }

@@ -1,8 +1,5 @@
 def call(String[] FILE_ARRAY, String NEXUS_REGISTRY, String IMAGE_TAG) {
-    
-     echo FILE_ARRAY[0];
-     for (file in FILE_ARRAY) {
-     
+    for (file in FILE_ARRAY) { 
       imagename=file.split("-")
       
       println "Building image "+imagename[1]

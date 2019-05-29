@@ -6,7 +6,7 @@ def call(String[] FILE_ARRAY) {
       imagename=file.split("-")
       println "Building image"+imagename[1]
 
-      sh "docker build -f file -t imagename[1]:latst ."
+      sh "docker build -f ${file} -t ${imagename[1]}:latst ."
    
      }
 

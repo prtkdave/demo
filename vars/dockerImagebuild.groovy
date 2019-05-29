@@ -6,10 +6,10 @@ def call(String[] FILE_ARRAY, String NEXUS_REGISTRY) {
       imagename=file.split("-")
       
       println "Building image "+imagename[1]
-      sh "docker build -f ${file} -t ${imagename[1]}:latst ."
+      sh "docker build -f ${file} -t ${imagename[1]}:latest ."
       
       println "Tag Image "+imagename[1]
-      sh "docker tag ${imagename[1]}:latst ${NEXUS_REGISTRY}/${imagename[1]}:latst"
+      sh "docker tag ${imagename[1]}:latest ${NEXUS_REGISTRY}/${imagename[1]}:latest"
 
       println "Login to NEXUS Registry"
       withCredentials([usernamePassword(

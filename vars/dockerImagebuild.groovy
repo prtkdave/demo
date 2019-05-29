@@ -4,7 +4,7 @@ def call(String[] FILE_ARRAY) {
      for (file in FILE_ARRAY) {
      
       file=file.split("-")
-       println file
+      println file[1]
   
      }
 

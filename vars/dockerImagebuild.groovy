@@ -19,7 +19,7 @@ def call(String[] FILE_ARRAY, String NEXUS_REGISTRY) {
 					   sh "echo $nexususer"
 					   sh "echo $nexuspass"
                     
-
+                       sh "docker login -u $nexususer -p $nexuspass $NEXUS_REGISTRY"
              }
 
      }

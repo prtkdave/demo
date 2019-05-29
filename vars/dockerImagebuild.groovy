@@ -12,16 +12,16 @@ def call(String[] FILE_ARRAY, String NEXUS_REGISTRY) {
       sh "docker tag ${imagename[1]}:latst ${NEXUS_REGISTRY}/${imagename[1]}:latst"
 
       println "Login to NEXUS Registry"
-           withCredentials([usernamePassword(
+      withCredentials([usernamePassword(
                        credentialsId: 'nexuscred',
                        passwordVariable: 'nexuspass',
                        usernameVariable: 'nexususer')]) {
-					   sh "echo $nexususer"
-					   sh "echo $nexuspass"
-                    
                        sh "docker login -u '$nexususer' -p '$nexuspass' ${NEXUS_REGISTRY}"
              }
-
+      
+      println "Push to NEXUS REPO"
+      sh "docker push ${NEXUS_REGISTRY}/${imagename[1]}:latest"
+         
      }
 
 }

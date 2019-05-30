@@ -6,7 +6,7 @@ def call(String[] FILE_ARRAY, String NEXUS_REGISTRY, String IMAGE_TAG) {
       sh "docker build -f ${file} -t ${imagename[1]}:${IMAGE_TAG} ."
       
       println "Tag Image "+imagename[1]
-      sh "docker tag ${imagename[1]}:latest ${NEXUS_REGISTRY}/${imagename[1]}:${IMAGE_TAG}"
+      sh "docker tag ${imagename[1]}:${IMAGE_TAG} ${NEXUS_REGISTRY}/${imagename[1]}:${IMAGE_TAG}"
 
       println "Login to NEXUS Registry"
       withCredentials([usernamePassword(

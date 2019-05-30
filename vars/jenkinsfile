@@ -1,0 +1,66 @@
+@Library('demo')_
+
+pipeline {
+    
+ agent any //{
+    // node {
+    //  label 'docker'
+    //    }
+ // }
+ environment {
+		GIT_URL = 'https://github.com/prtkdave/dockerfilerepo'
+		NEXUS_URL = 'http://ec2-34-229-190-97.compute-1.amazonaws.com:8183'
+		NEXUS_REGISTERY = 'ec2-34-229-190-97.compute-1.amazonaws.com:8123'
+		IMAGE_TAG = "${env.BUILD_NUMBER}"
+	}
+  // using the Timestamper plugin we can add timestamps to the console log
+	options {
+		timestamps()
+	}
+
+	stages {
+    	stage('Checkout Dockerfile') {
+			steps{
+			 script {
+				withCredentials([
+				usernamePassword(credentialsId: '5b09e5e8-aca5-4bc3-ae64-da77adb44743', 
+				passwordVariable: 'githubpass', 
+				usernameVariable: 'githubuser')]) {
+						git "$GIT_URL"
+					}
+					
+				}
+			}
+		}
+		
+		stage('Buid image from Docker file and push to nexus repositry') {
+			steps{
+			 script {
+                    def FILE_ARRAY=sh(returnStdout: true,script: 'git ls-tree --name-only -r $(git log | head -1 | cut -d" " -f2)').split("\n");
+                    echo "$NEXUS_URL"
+                    dockerImagebuild.call(FILE_ARRAY,"$NEXUS_REGISTERY","$IMAGE_TAG")
+				}
+			}
+		}
+		
+/*		stage('Tag Docker Image') {
+			steps{
+			 script {
+					//ayHello.call('Dave')
+					//sayHello.newCall('Pratik')
+					dockerBuild.call('ubuntu','tag1')
+				}
+			}
+		}
+		
+		stage('Push to Nexus repo') {
+			steps{
+			 script {
+					//ayHello.call('Dave')
+					//sayHello.newCall('Pratik')
+					dockerBuild.call('ubuntu','tag1')
+				}
+			}
+		} */
+	}
+}
